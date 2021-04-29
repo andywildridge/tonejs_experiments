@@ -1,0 +1,51 @@
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.14/Tone.js" integrity="sha512-0R3O2W4t+1h8Jd3LumXXJrpHuY76WDdjE9he0D7Ra6J95lnvbdmZe+CTw5Bfe2p4CrYeC/dpgtJ33ztGUXKH4Q==" crossorigin="anonymous"></script>
+<style>
+
+</style>
+</head>
+<body>
+<button id="go">fire up</button>
+<button id="switch">switch</button>
+<button id="switch2">switch</button>
+
+<script>
+document.querySelector('#go')?.addEventListener('click', async () => {
+	await Tone.start()
+	console.log('audio is ready')
+    Tone.Transport.bpm.value = 120;
+
+    const synth = new Tone.Synth().toDestination();
+
+    let pattern = [0, 0, 0, 0];
+    let kick = [1, 1, 0, 0];
+    let snare = [0, 0, 1, 0];
+
+    var party = new Tone.Pattern(function(time, index){
+        kick[index] && synth.triggerAttackRelease("C2", "16n", time);
+        snare[index] && synth.triggerAttackRelease("C3", "16n", time);
+        
+        //the value is an object which contains both the note and the velocity
+        //synth.triggerAttackRelease(value.note, "8n", time, value.velocity);
+    }, Array.from(pattern.keys()), "up").start(0);
+
+    party.interval = '5n';
+    party.iterations = 80;
+    console.log(party.interval);
+
+    Tone.Transport.start();
+
+    document.querySelector('#switch')?.addEventListener('click', function(){
+        kick = [1, 0, 0, 1];
+    });
+    document.querySelector('#switch2')?.addEventListener('click', function(){
+        kick = [1, 1, 0, 1];
+    });
+
+});
+
+
+</script>
+</body>
+</html>
