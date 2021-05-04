@@ -1,0 +1,27 @@
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.14/Tone.js" integrity="sha512-0R3O2W4t+1h8Jd3LumXXJrpHuY76WDdjE9he0D7Ra6J95lnvbdmZe+CTw5Bfe2p4CrYeC/dpgtJ33ztGUXKH4Q==" crossorigin="anonymous"></script>
+<style>
+
+</style>
+</head>
+<body>
+	<button id="go">fire up</button>
+	<button id="start">start</button>
+<script>
+	let player;
+document.querySelector('#go')?.addEventListener('click', async () => {
+	await Tone.start();
+	console.log('audio is ready');
+	const gain = new Tone.Gain ( 0.2 ).toDestination();
+	gain.toMaster();
+	player = new Tone.Player("dr660-000.wav").connect(gain);
+	player.loop = true;
+});
+document.querySelector('#start')?.addEventListener('click', function(){
+	player.start();
+	Tone.Transport.start();
+});
+</script>
+</body>
+</html>

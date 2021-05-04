@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.14/Tone.js"
+        integrity="sha512-0R3O2W4t+1h8Jd3LumXXJrpHuY76WDdjE9he0D7Ra6J95lnvbdmZe+CTw5Bfe2p4CrYeC/dpgtJ33ztGUXKH4Q=="
+        crossorigin="anonymous"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <button id="start">fire up</button>
+<script>
+    let players;
+    document.querySelector('#start')?.addEventListener('click', function(){
+
+        players = new Tone.Players({
+			"one" : '/samples/Eno-Piano-01.wav',
+            'two' : '/samples/Eno-Piano-02.wav'
+		}, function(){
+            start();
+        }).toDestination();
+
+        function start(){
+            let p1 = players.player('one').buffer.duration;
+            players.player('one').loop = true;
+            players.player('two').loop = true;
+            players.player('one').start();
+            players.player('two').start();
+            const clock = new Tone.Clock(time => {
+                console.log(time % p1);
+            }, 1).start();
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.14/Tone.js"
+        integrity="sha512-0R3O2W4t+1h8Jd3LumXXJrpHuY76WDdjE9he0D7Ra6J95lnvbdmZe+CTw5Bfe2p4CrYeC/dpgtJ33ztGUXKH4Q=="
+        crossorigin="anonymous"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <button id="start">fire up</button>
+<script>
+    let player;
+    let player2;
+
+    const createGrainPlayer = () => {
+        return new Tone.GrainPlayer({
+			url: "/samples/Eno-Piano-02.wav",
+			loop: true,
+			grainSize: 1,
+            loopStart: 0,
+            loopEnd: 1.2,
+			overlap: 0.4,
+            onload: start,
+            playbackRate: 1
+		});
+    };
+
+    function start(){
+        console.log('loaded');
+        player.start(0,1);
+        player2.start(0,0);
+    }
+
+    document.querySelector('#start')?.addEventListener('click', function(){
+        player = createGrainPlayer(); 
+        player2 = createGrainPlayer();       
+        player.toDestination();
+        player2.toDestination();
+        const clock = new Tone.Clock(time => {
+            let r = Math.random()*1.5;
+            player.loopStart = r;
+            player.loopEnd = r+ (Math.random()*0.5);
+            console.log(player.loopStart, player.loopEnd);
+            r = Math.random()*1.5;
+            player2.loopStart = r;
+            player2.loopEnd = r+ (Math.random()*0.5);
+            console.log(player2.loopStart, player2.loopEnd);
+        }, 1);
+        clock.start();
+    });
+</script>
+</body>
+
+</html>

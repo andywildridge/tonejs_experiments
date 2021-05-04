@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.14/Tone.js"
+        integrity="sha512-0R3O2W4t+1h8Jd3LumXXJrpHuY76WDdjE9he0D7Ra6J95lnvbdmZe+CTw5Bfe2p4CrYeC/dpgtJ33ztGUXKH4Q=="
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <button id="start">fire up</button>
+<script>
+    let player;
+    let scaleNotes = Tonal.Scale.get("E4 phrygian").notes;
+
+    let chords = [];
+    let currentChord = 0;
+    let nextChord = 0;
+
+    let poly;
+    function setup() {
+        // generate all the chords in our scale
+        // (harmonizing the scale)
+        for (let i = 0; i < scaleNotes.length; i++) {
+            let chord = [];
+
+            chord[0] = getMidiNote(i, scaleNotes);
+            chord[1] = getMidiNote(i + 2, scaleNotes);
+            chord[2] = getMidiNote(i + 4, scaleNotes);
+            chord[3] = getMidiNote(i + 6, scaleNotes);
+
+            //console.log(chord);
+            chords.push(chord);
+        }
+    }
+
+    //poly.triggerAttackRelease(Tonal.Scale.get("B4 minor").notes, 1);
+    //poly.triggerAttackRelease(Tonal.Scale.get("F4 minor").notes, 1);
+
+    document.querySelector('#start')?.addEventListener('click', function(){
+        Tone.Master.volume.value = -9; // turn it down a bit
+
+        poly = new Tone.PolySynth(Tone.AMSynth, {
+            envelope: {
+            attack: 0.1,
+            release: 2
+            }
+        });
+        poly.toDestination(); // Tone.Master
+
+        function start(){
+
+            const clock = new Tone.Clock(time => {
+                console.log(time % p1);
+            }, 1).start();
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -17,22 +17,30 @@ document.querySelector('#go')?.addEventListener('click', async () => {
     Tone.Transport.bpm.value = 120;
 
     const synth = new Tone.Synth().toDestination();
+    const synth2 = new Tone.Synth().toDestination();
 
     let pattern = [0, 0, 0, 0];
-    let kick = [1, 1, 0, 0];
+    let kick = ['c4', 'd4', 'e4','b4'];
     let snare = [0, 0, 1, 0];
 
-    var party = new Tone.Pattern(function(time, index){
-        kick[index] && synth.triggerAttackRelease("C2", "16n", time);
-        snare[index] && synth.triggerAttackRelease("C3", "16n", time);
-        
-        //the value is an object which contains both the note and the velocity
-        //synth.triggerAttackRelease(value.note, "8n", time, value.velocity);
+    let part1 = new Tone.Pattern(function(time, index){
+        kick[index] && synth.triggerAttackRelease(kick[index], "8n", time);
+        //snare[index] && synth.triggerAttackRelease("C3", "16n", time);
+        console.log('p1',kick[index]);
     }, Array.from(pattern.keys()), "up").start(0);
 
-    party.interval = '5n';
-    party.iterations = 80;
-    console.log(party.interval);
+    part1.interval = '2n';
+    //party.iterations = 80;
+
+    let part2 = new Tone.Pattern(function(time, index){
+        kick[index] && synth2.triggerAttackRelease(kick[index], "16n", time);
+        //kick[index] && synth.triggerAttackRelease("C2", "16n", time);
+        //snare[index] && synth.triggerAttackRelease("C3", "16n", time);
+        console.log('p2',kick[index]);
+    }, Array.from(pattern.keys()), "up").start(0);
+
+    part2.interval = '5n';
+
 
     Tone.Transport.start();
 
