@@ -4,7 +4,10 @@
 			url: "https://tonejs.github.io/audio/berklee/arpeggio3crazy.mp3",
 			loop: true,
 			grainSize: 0.1,
-			overlap: 0.05,
+            loopStart: 0.7,
+            loopEnd: 1.4,
+			overlap: 0.1,
+            start: start
 		}).toDestination();
 
 		ui({

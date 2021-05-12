@@ -40,10 +40,26 @@
 
     //poly.triggerAttackRelease(Tonal.Scale.get("B4 minor").notes, 1);
     //poly.triggerAttackRelease(Tonal.Scale.get("F4 minor").notes, 1);
+    //
+    //poly.triggerAttackRelease(chord("maj7", "C"), 1);
+
+    let chord = (a,b) => Tonal.Chord.getChord(a, b).notes.map(i=>i+2);
+    let chordy = ["B3 min", "F#2 min", "E2 min", "A3 maj"];
+    //["F4 maj", "G4 maj", "C4 maj", "A4 min"];
+    let chordyType = ['min']; //['maj7', 'min7', 'dim7', 'dim'];
+    let step = 0;
+    let getChord = () => {
+        //return chordy[Math.floor(Math.random()*chordy.length)];
+        if(step===chordy.length){step=0;}
+        return chordy[step++];
+    }
+    let getChordType = () => {
+        return chordyType[Math.floor(Math.random()*chordyType.length)];
+    }
 
     document.querySelector('#start')?.addEventListener('click', function(){
         Tone.Master.volume.value = -9; // turn it down a bit
-
+        
         poly = new Tone.PolySynth(Tone.AMSynth, {
             envelope: {
             attack: 0.1,
@@ -55,9 +71,19 @@
         function start(){
 
             const clock = new Tone.Clock(time => {
-                console.log(time % p1);
+                //console.log(time % p1);
+                //poly.triggerAttackRelease(chord("maj7", "C"), "2n");
             }, 1).start();
+
+            let part1 = new Tone.Pattern(function(time, index){
+                poly.triggerAttackRelease(getChord(), "1n");
+            }, ["C1"], "up").start(0);
+
+            part1.interval = '1n';
+
+            Tone.Transport.start();
         }
+        start();
     });
 </script>
 </body>
